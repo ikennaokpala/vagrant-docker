@@ -1,0 +1,3 @@
+#!/bin/bash
+# login to docker index
+docker login --username=xxxxxxx --password=xxxxxxxx --email=email@example.me.uk

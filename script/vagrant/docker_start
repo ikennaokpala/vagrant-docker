@@ -1,0 +1,21 @@
+#!/bin/bash
+cd /Users/ikennanokpala/repo/vagrant
+echo Starting required service containers
+export HOSTa_NAME=192.168.51.1
+# Stop and remove all containers
+script/vagrant/docker_clean
+# login to docker index
+script/vagrant/docker_login
+# Start MongoDB
+docker run --name=mongodb --detach=true --publish=27017:27017 --publish=28017:28017 dockerfile/mongodb
+read -t5 -n1 -r -p "Waiting for mongodb to start..." key
+# Start rabbitmq
+docker run --name=rabbitmq --detach=true --publish=5671:5671 --publish=5672:5672 --publish=55672:55672 --publish=15672:15672 --publish=15674:15674 --publish=61613:61613 --env RABBITMQ_USER=guest --env RABBITMQ_PASS=guest rabbitmq
+read -t5 -n1 -r -p "Waiting for rabbitmq to start..." key
+# Start cache
+docker run --name=memcached --detach=true --publish=11211:11211  ehazlett/memcached
+read -t5 -n1 -r -p "Waiting for cache to start..." key
+# Start elasticsearch
+docker run --name=elasticsearch --detach=true --publish=9200:9200 --publish=9300:9300 dockerfile/elasticsearch
+read -t5 -n1 -r -p "Waiting for elasticsearch to start..." key
+echo "All services started"

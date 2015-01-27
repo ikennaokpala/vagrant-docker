@@ -1,0 +1,8 @@
+#!/bin/bash
+export ETCD_HOST=192.168.51.1
+if [ "$#" == 0 ]
+then
+  docker run --name=web --publish=5000:5000 --volume=/Users/ikennanokpala/repo/vagrant:/project --link=mongodb:mongodb --link=rabbitmq:rabbitmq --link=elasticsearch:elasticsearch  --link=memcached:memcached --tty=false --interactive=false --detach=true web bundle exec rails s -p 5000 -e development
+else
+  docker run --name=web_run --volume=/Users/ikennanokpala/repo/vagrant:/project --link=mongodb:mongodb --link=rabbitmq:rabbitmq --link=elasticsearch:elasticsearch --link=memcached:memcached --tty=true --interactive=true --detach=false --rm=true web $@
+fi

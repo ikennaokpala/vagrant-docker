@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+cd /Users/ikennanokpala/repo/vagrant
+script/vagrant/docker_web run rake db:create
+script/vagrant/docker_web run rake db:migrate
+script/vagrant/docker_web run rake db:test:prepare
